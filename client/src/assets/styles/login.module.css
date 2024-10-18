@@ -1,0 +1,76 @@
+@import url('root.css');
+
+body {
+
+    padding: 0;
+    margin: 0;
+    background-color: var(--mp-darkgrey);
+    font-family: 'Montserrat Medium';
+
+}
+
+#content {
+
+    width: 100vw;
+    height: 90vh;
+    height: 90dvh;
+    box-sizing: content-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+#title_wrapper {
+
+    width: 100%;
+    text-align: center;
+    box-sizing: content-box;
+    padding-bottom: 5rem;
+    color: white;
+}
+
+#title_header {
+
+    font-size: 6rem;
+    padding: 0 0 2rem 0;
+    margin: 0;
+}
+
+#connect_with_spotify_btn {
+
+    width: 15rem;
+    height: 3.5rem;
+    border-radius: 5rem;
+    border: none;
+    font-family: var(--header-font);
+    font-size: var(--subheader-fontsize);
+    background-color: var(--mp-lightgreen);
+    transition: 0.2s ease-in;
+
+}
+
+#connect_with_spotify_btn:hover {
+
+    background-color: var(--mp-darkgreen);
+    transition: 0.2s ease-in;
+    cursor: pointer;
+}
+
+
+#application_of_spotify_tag {
+
+    color: white;
+    font-size: var(--text-fontsize);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: .5;
+}
+
+#application_of_spotify_logo {
+
+    width: 4rem;
+    padding-left: .5rem;
+}

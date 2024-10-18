@@ -1,0 +1,114 @@
+@import url('root.css');
+
+.navbar_container {
+
+    width: 500px;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    padding: .25rem 0 0 2rem;
+
+
+}
+
+.logo {
+
+    margin-right: 2rem;
+
+}
+
+.logo path {
+
+    fill: white;
+}
+
+
+.navbar {
+
+    width: 0px;
+    height: 75px;
+    display: none;
+    flex-direction: row;
+    align-items: center;
+
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+
+}
+
+.triangle {
+
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid var(--mp-darkgrey);
+}
+
+.navbar_wrapper {
+
+    width: 80%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+    background: var(--mp-darkgrey);
+    border-radius: .75rem;
+
+}
+
+.options {
+
+    width: 1.25rem;
+    height: 70%;
+    background: var(--mp-darkgrey);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: .25rem;
+}
+
+.dots {
+
+    width: 7px;
+    height: 7px;
+    background: grey;
+    border-radius: .5rem;
+}
+
+.link {
+
+    width: 2rem;
+    height: 2rem;
+    margin-top: 3.5rem;
+    box-sizing: border-box;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.user_profile {
+
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    background: green;
+    border-radius: 3rem;
+}
+
+.navbar.toggle {
+
+    width: 400px;
+    display: flex;
+    transform: scaleX(1);
+    transform-origin: left;
+
+
+}

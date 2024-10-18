@@ -1,0 +1,163 @@
+@import url('root.css');
+
+#content {
+
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-bottom: 0;
+
+}
+
+#header_text {
+
+    font-size: var(--header-fontsize);
+    font-family: var(--header-font);
+    color: var(--mp-lightgrey);
+}
+
+#add_tag_cont {
+
+    width: 50rem;
+    height: 3rem;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+#added_tag_wrapper {
+
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+
+.added_tag {
+
+    width: 6.5rem;
+    height: 1.5rem;
+    border-radius: .5rem;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-family: var(--header-font);
+    font-size: var(--text-fontsize);
+    background: var(--mp-midgrey);
+    color: var(--mp-lightgrey);
+
+}
+
+.delete_added_tag {
+
+    width: 1rem;
+    height: 1rem;
+    background: white;
+}
+
+#added_tag_counter {
+
+    font-family: var(--header-font);
+    margin-right: 1.5rem;
+    margin-left: auto;
+    color: var(--mp-lightgrey);
+}
+
+#suggested_tags_cont {
+
+    width: 50rem;
+    height: 5rem;
+    justify-self: flex-end;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.suggested_tag {
+
+    width: 8rem;
+    height: 2.5rem;
+    border-radius: .5rem;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-family: var(--header-font);
+    background: var(--mp-midgrey);
+    color: var(--mp-lightgrey);
+
+
+}
+
+#search_wrapper {
+
+    width: 100%;
+    height: 20rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 3rem;
+
+}
+
+
+#search_bar {
+
+    width: 50rem;
+    height: 3rem;
+    margin: 3.2rem 0 3.2rem 0;
+    border-radius: 2.6rem;
+    border: none;
+    text-decoration: none;
+    text-indent: 1.7rem;
+    font-family: var(--subheader-font);
+}
+
+#btn_wrapper {
+
+    width: 35rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.search_btn {
+
+    width: 10rem;
+    height: 3.5rem;
+    border: none;
+    border-radius: 3rem;
+    background: var(--mp-lightgreen);
+    font-family: var(--header-font);
+}
+
+#spotify_branding {
+
+    width: 100vw;
+    height: 3.1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: white;
+    font-family: var(--text-font);
+    font-size: var(--text-size);
+    opacity: .35;
+    margin-right: 2rem;
+
+}
+
+#spotify_logo {
+
+    width: 4.3rem;
+    padding-left: .8rem;
+}
