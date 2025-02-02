@@ -9,30 +9,32 @@ import MoodPlayerIcon from '../assets/img/moodplayer-logo-icon.svg';
 import styles from '../assets/styles/navbar.module.css';
 
 
-export default function Navbar() {
+function Navbar() {
 
     const [isToggled, setIsToggled] = useState(false);
 
-    const toggleNav = () => {
+
+    function toggleNav() {
 
         setIsToggled(!isToggled);
+
     }
 
     return (
 
         <>
 
-            <div className={styles.navbar_container} onClick={toggleNav}>
+            <div className={`${styles.navbar_container} ${isToggled ? styles.toggled : styles.collapsed}`} onClick={toggleNav}>
                 <MoodPlayerIcon className={styles.logo} />
 
-                <nav className={`${styles.navbar} ${isToggled ? styles.toggle : ''}`}>
+                <nav className={`${styles.navbar} ${isToggled ? styles.toggled : ''}`}>
                     <div className={styles.triangle}></div>
 
                     <div className={styles.navbar_wrapper}>
                         <NavLink className="nav_search" to="/search">
                             <SearchIcon alt="Search" />
                         </NavLink>
-                        <NavLink className="nav_listen">
+                        <NavLink className="nav_listen" to="/play">
                             <ListenIcon alt="Listen" />
                         </NavLink>
                         <NavLink className="nav_history">
@@ -53,3 +55,5 @@ export default function Navbar() {
         </>
     )
 }
+
+export default Navbar;

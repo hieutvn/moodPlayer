@@ -140,24 +140,3 @@
     background: var(--mp-lightgreen);
     font-family: var(--header-font);
 }
-
-#spotify_branding {
-
-    width: 100vw;
-    height: 3.1rem;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    color: white;
-    font-family: var(--text-font);
-    font-size: var(--text-size);
-    opacity: .35;
-    margin-right: 2rem;
-
-}
-
-#spotify_logo {
-
-    width: 4.3rem;
-    padding-left: .8rem;
-}

@@ -8,7 +8,7 @@ export default defineConfig({
 
     proxy: {
 
-      '/api/auth': {
+      '/api/login': {
         target: 'http:localhost:3000',
         changeOrigin: true,
         //rewrite: (path) => path.replace(/^\/api/auth, '/auth')

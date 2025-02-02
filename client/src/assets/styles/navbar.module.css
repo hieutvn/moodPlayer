@@ -2,20 +2,32 @@
 
 .navbar_container {
 
-    width: 500px;
     height: 75px;
     display: flex;
     flex-direction: row;
     align-items: center;
     position: absolute;
-    padding: .25rem 0 0 2rem;
+    padding-left: 2rem;
+    background: none;
 
 
+}
+
+.navbar_container.collapsed {
+
+    width: 2.5;
+
+}
+
+.navbar_container.toggled {
+
+    width: 500px;
 }
 
 .logo {
 
     margin-right: 2rem;
+    width: 2.5rem;
 
 }
 
@@ -103,7 +115,8 @@
     border-radius: 3rem;
 }
 
-.navbar.toggle {
+
+.navbar.toggled {
 
     width: 400px;
     display: flex;

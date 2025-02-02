@@ -1,0 +1,77 @@
+@import url('root.css');
+
+
+.moods_container {
+
+    max-width: 40rem;
+    min-width: 3rem;
+    width: 40rem;
+    height: 3rem;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+
+.moodtags_container {
+
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    align-items: center;
+    justify-items: center;
+
+}
+
+.tag {
+
+    width: 8rem;
+    background: var(--mp-midgrey);
+    font-size: var(--text-fontsize);
+    font-family: var(--subheader-font);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 1rem;
+    color: var(--mp-lightgrey);
+    border: 1px solid var(--mp-lightgrey);
+}
+
+.tag_wrapper {
+
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.x_btn {
+
+    padding: .5em;
+}
+
+.x_btn path {
+
+    fill: var(--mp-lightgrey);
+}
+
+.x_btn:hover {
+
+    cursor: pointer;
+}
+
+
+
+@media (max-width: 600px) {
+
+    .moods_container {
+
+        display: none;
+    }
+}

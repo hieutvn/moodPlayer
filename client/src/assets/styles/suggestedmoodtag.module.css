@@ -1,0 +1,36 @@
+@import url('root.css');
+
+.suggested_tag_wrapper {
+
+    width: 14rem;
+    height: 4rem;
+    background: var(--mp-midgrey);
+    border: 2px var(--mp-lightgrey) solid;
+    border-radius: .75rem;
+    font-family: var(--subheader-font);
+    font-size: var(--subheader-fontsize);
+    color: var(--mp-lightgrey);
+    margin: .5rem;
+    display: flex;
+    align-items: center;
+
+}
+
+.suggested_img {
+
+    width: 4.25rem;
+    height: 100%;
+    border-radius: .5rem;
+    background-color: blue;
+}
+
+.suggested_img:hover {
+
+    cursor: pointer;
+}
+
+.suggested_tag {
+
+    text-align: center;
+    padding-left: 1rem;
+}

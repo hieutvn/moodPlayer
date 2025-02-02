@@ -3,13 +3,14 @@ import axios from 'axios';
 
 import Login from './Login';
 import NavBar from './Navbar';
-import HomePage from './HomePage';
+import Dashboard from './Dashboard';
+import Navigation from './Navigation';
 
 import '../assets/styles/root.css';
 
 
-export default function App() {
 
+export default function App() {
 
     useEffect(() => {
 
@@ -20,9 +21,8 @@ export default function App() {
 
         <>
 
-            <NavBar />
-            <HomePage />
-
+            <Navigation />
+            <Dashboard />
         </>
     )
 }

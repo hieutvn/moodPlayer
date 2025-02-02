@@ -1,0 +1,40 @@
+@import url('root.css');
+
+
+.content {
+
+    width: 100%;
+    height: 90%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    position: absolute;
+    bottom: 2rem;
+}
+
+.left_panel {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.main_panel {
+
+    width: 100%;
+    height: 100%;
+}
+
+.right_panel {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}

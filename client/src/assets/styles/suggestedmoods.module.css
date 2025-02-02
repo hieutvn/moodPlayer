@@ -1,0 +1,57 @@
+@import url('root.css');
+
+
+
+
+.suggested_moods_container {
+
+    width: 100vw;
+    height: 34rem;
+    background: rgb(77, 77, 168);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+}
+
+.suggested_moods_wrapper {
+
+    width: 95%;
+    height: 100%;
+    border: 1px red solid;
+}
+
+.suggested_btn {
+
+    font-family: var(--header-font);
+    font-size: var(--subheader-fontsize);
+    color: white;
+}
+
+.suggested_btn:hover {
+
+    cursor: pointer;
+}
+
+.suggested_moods {
+
+    width: 100%;
+    background: rgb(45, 45, 105);
+
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    overflow-y: auto;
+
+}
+
+.row_ {
+
+    width: 100%;
+    height: 3rem;
+    color: white;
+    font-size: var(--header-fontsize);
+    font-family: var(--header-font);
+
+}
