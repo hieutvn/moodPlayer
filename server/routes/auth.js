@@ -10,9 +10,9 @@ const CALLBACK_URI = process.env.CALLBACK_URI;
 
 let tokenStorage = {
 
-    accessToken: '',
-    refreshToken: '',
-    expiresIn: ''
+    accessToken: null,
+    refreshToken: null,
+    expiresIn: null
 };
 let tokenId;
 
@@ -42,7 +42,7 @@ router.get("/login", (req, res) => {
 
 router.get("/callback",
 
-    async (req, res, next) => {
+    async (req, res) => {
 
         console.log("Route at: /callback")
 
@@ -57,53 +57,37 @@ router.get("/callback",
 
                 const { accessToken, refreshToken, expiresIn } = spotifyAccess;
 
-                console.log("SpotAccess", spotifyAccess)
+                tokenStorage.accessToken = accessToken,
+                    tokenStorage.refreshToken = refreshToken,
+                    tokenStorage.expiresIn = expiresIn
 
 
-                tokenStorage.accessToken = req.accessToken,
-                    tokenStorage.refreshToken = req.refreshToken,
-                    tokenStorage.expiresIn = req.expiresIn
-
-                next();
-
+                res.status(200).redirect(`http://localhost:5173/play?`);
             }
+
         }
         catch (error) {
 
             console.error("Error fetching Spotify access token:", error);
         }
     },
-    (req, res) => {
-
-        console.log("Route at: cookie")
-        console.log(req.body)
-
-        //tokenId = Date.now(); expirey tbd
-        res.json({
-
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expiresIn: expiresIn
-        })
-
-
-        res.status(200).redirect(`http://localhost:5173/play?`);
-    }
 );
+
+router.post('/store', (req, res) => {
+
+    tokenStorage = req.body;
+
+    res.json({ message: "Data stored successfully." });
+});
 
 router.get("/get-token", (req, res) => {
 
     console.log("Route at: /get-token");
 
-    console.log(tokenStorage)
+    console.log("storage", tokenStorage)
 
 
-    res.json({
-
-        accessToken: tokenStorage.accessToken,
-        refreshToken: tokenStorage.refreshToken,
-        expiresIn: tokenStorage.expiresIn
-    });
+    res.json(tokenStorage.accessToken !== null ? tokenStorage : { message: "no data available." })
 });
 
 
@@ -235,5 +219,19 @@ res.sendStatus(400);
 
 
 
+router.get("/get-token", (req, res) => {
+
+    console.log("Route at: /get-token");
+
+    console.log(tokenStorage)
+
+
+    res.json({
+
+        accessToken: tokenStorage.accessToken,
+        refreshToken: tokenStorage.refreshToken,
+        expiresIn: tokenStorage.expiresIn
+    });
+});
 
 */

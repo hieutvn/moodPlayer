@@ -10,7 +10,7 @@ import PlayerControls from "./PlayerControls";
 import AlbumInfo from "./AlbumInfo";
 import ArtistInfo from "./ArtistInfo";
 import Navigation from "./Navigation";
-
+import AudioTrackCard from "./AudioTrack";
 
 
 import styles from '../assets/styles/listeningtab.module.css';
@@ -22,15 +22,15 @@ import useAuth from "./useAuth";
 function ListeningTab() {
 
     //const [token, setToken] = useState({ accessToken: undefined, refreshToken: undefined });
-    const [token, setToken] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
     const [song_info, setSongInfo] = useState(null);
-    const accessToken = useAuth();
+    const reqAccessToken = useAuth();
 
     useEffect(() => {
 
+        setAccessToken(reqAccessToken)
 
-
-    }, []);
+    }, [reqAccessToken]);
 
     return (
 
@@ -45,16 +45,14 @@ function ListeningTab() {
 
                 <div className={styles.main_panel}>
 
-                    {(token === null) ? <h1>No Player active.</h1> : <PlayerControls token={accessToken} />}
+                    {(accessToken === null) ? <h1>No Player active.</h1> : <PlayerControls token={accessToken} />}
 
 
                 </div>
 
                 <div className={styles.right_panel} >
 
-                    <ArtistInfo />
-                    <AlbumInfo />
-
+                    <AudioTrackCard />
 
                 </div>
 

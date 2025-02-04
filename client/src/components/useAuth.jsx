@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
-export default async function useAuth() {
+export default function useAuth() {
 
-    const [access_token, setAccessToken] = useState('');
-    const [refresh_token, setRefreshToken] = useState('');
-    const [expires_in, setExpirey] = useState('');
+    const [access_token, setAccessToken] = useState(null);
+    const [refresh_token, setRefreshToken] = useState(null);
+    const [expires_in, setExpirey] = useState(null);
 
     useEffect(() => {
 
@@ -16,7 +16,11 @@ export default async function useAuth() {
 
                 const data = await request_token.json();
 
-                console.log(data)
+                const { accessToken, refreshToken, expiresIn } = data;
+
+                setAccessToken(accessToken);
+                setRefreshToken(refreshToken);
+                setExpirey(expiresIn);
 
             }
             catch (error) {

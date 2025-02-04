@@ -155,14 +155,6 @@ function PlayerControls(props) {
 
     }, [song_info])
 
-    useEffect(() => {
-
-        if (device_id !== null) {
-            addTrack(device_id, props.token)
-            console.log("track added")
-
-        }
-    }, [])
 
     if (!is_active) {
 

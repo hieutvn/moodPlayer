@@ -2,6 +2,8 @@ import { useEffect, useState, createContext, useContext } from "react";
 import ArtistInfo from "./ArtistInfo";
 import AlbumInfo from "./AlbumInfo";
 
+import styles from '../assets/styles/audiotrackcard.module.css';
+
 let trackObj = {};
 export const AudioContext = createContext();
 
@@ -18,6 +20,81 @@ export function useAudioTrack(track) {
 
     return currentAudio;
 }
+
+export function useAudio() {
+
+    return useContext(AudioContext);
+}
+
+
+
+export default function AudioTrackCard() {
+
+    return (
+
+        <div className={styles.wrapper}>
+            <div className={styles.artist_info}>
+
+                <img className={styles.aritst_image} src="" alt="" />
+
+                <div className={styles.artist_info_wrapper}>
+                    <div className={styles.artist_music_tags}>
+                        <span className={styles.tag}>Hip Hop</span>
+                        <span className={styles.tag}>Rap</span>
+                    </div>
+                    <div className={styles.artist_info_container}>
+
+                        <div className={styles.artist_music_tags}>
+
+                            <p className={styles.artist_name}>ARTISTNAME</p>
+                            <p className={styles.artist_monthly_listeners}>00000 monthly listeners</p>
+                        </div>
+                        <button className={styles.follow_btn}>FOLLOW</button>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+            <div className={styles.album_info}>
+                <div className={styles.album_info_top}>
+                    <span className={styles.album_info_header}>Album</span>
+                    <p className={styles.album_info_name}>METRO BOOMIN PRESENTS SPIDER‐MAN: ACROSS THE SPIDER‐VERSE: SOUNDTRACK FROM AND INSPIRED BY THE MOTION PICTURE
+                    </p>
+                </div>
+
+                <span className={styles.album_info_header}>Song List</span>
+                <ul className={styles.album_song_list}>
+                    <li className={styles.current_playing}>Song 1</li>
+                    <li className={styles.current_playing}>Song 2</li>
+                    <li>Song 3</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export async function requestTrack(token) {
 
@@ -139,7 +216,7 @@ export async function getCurrentSong(token) {
 
 export async function getCurrentSongData() {
 
-    const data = await getCurrentSong()
+    const data = await getCurrentSong();
     let currentTrack = {
 
         artist: "",
@@ -149,14 +226,8 @@ export async function getCurrentSongData() {
     currentTrack.artist = data.item.artists[0].name;
     currentTrack.song = data.item.name;
     currentTrack.album = data.item.album.name;
-    setTrack(currentTrack);
-}
-
-export function useAudio() {
-
-    return useContext(AudioContext);
 }
 
 
 
-export default useAudioTrack;
+
