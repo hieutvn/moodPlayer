@@ -2,15 +2,25 @@
 
 .navigation_wrapper {
 
-    width: 90rem;
+    width: 100vw;
     height: 3rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
     align-items: center;
     color: white;
     position: absolute;
     z-index: 999;
+    padding: 1rem;
+}
+
+.logo_icon_container {
+
+    width: 20rem;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .search_bar_container {
@@ -22,7 +32,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 1.25rem 0 0 1.25rem;
+    border-radius: 2rem 0 0 2rem;
 
 }
 
@@ -35,7 +45,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    border-radius: 2rem;
+    border-radius: 3rem;
 }
 
 .moods_container {
@@ -45,7 +55,7 @@
     justify-content: space-evenly;
     align-items: center;
     background-color: var(--mp-midgrey);
-    border-radius: 0 1.5rem 1.5rem 0;
+    border-radius: 0 2rem 2rem 0;
 
 }
 
@@ -95,11 +105,13 @@
 
     fill: var(--mp-lightgreen);
     stroke: var(--mp-lightgreen);
+
 }
 
 .collapsed {
 
-    display: block;
+    display: none;
+    width: 0;
 }
 
 .search_bar {

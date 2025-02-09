@@ -3,22 +3,121 @@ import ArtistInfo from "./ArtistInfo";
 import AlbumInfo from "./AlbumInfo";
 
 import styles from '../assets/styles/audiotrackcard.module.css';
-
-let trackObj = {};
-export const AudioContext = createContext();
+import useAuth from "./useAuth";
 
 
-export function useAudioTrack(track) {
 
-    const [currentAudio, setCurrentAudio] = useState('null');
+export default function AudioTrackCard() {
+
+    const reqAccessToken = useAuth();
+    const [currentTrackSet, setCurrentTrackSet] = useState({});
+    const [songInfo, setSongInfo] = useState({ artist: null, song: null, album: null, album_id: null });
+
+    //const { currentSongCtx } = useCurrentSong();
 
     useEffect(() => {
 
-        if (track === null) setCurrentAudio(currentAudio);
+        const reqSongData = async () => {
 
-    }, [track]);
+            const data = await getCurrentSongData(props.token);
 
-    return currentAudio;
+            if (data) setSongInfo("current song", data);
+
+        }
+
+        reqSongData()
+
+    }, [reqAccessToken]);
+
+    useEffect(() => {
+
+        const reqAlbumData = async () => {
+
+            const data = await requestAlbum(reqAccessToken, songInfo.album_id);
+
+            if (data) {
+
+                //setTrackSet(data.tracks.items);
+                console.log("alb", data)
+            }
+        }
+
+        reqAlbumData();
+
+
+    }, [songInfo]);
+
+
+
+
+    if (!songInfo) {
+
+        return (
+
+            <h3>Info loading...</h3>
+        )
+    }
+    else {
+
+        return (
+
+            <div className={styles.wrapper}>
+                <div className={styles.artist_info}>
+
+
+                    <img className={styles.aritst_image} src="" alt="" />
+
+                    <div className={styles.artist_info_wrapper}>
+                        <div className={styles.artist_music_tags}>
+                            <span className={styles.tag}>Hip Hop</span>
+                            <span className={styles.tag}>Rap</span>
+                        </div>
+                        <div className={styles.artist_info_container}>
+
+                            <div className={styles.artist_music_tags}>
+
+                                <p className={styles.artist_name}>{!songInfo.artist ? "-" : songInfo.artist}</p>
+                                <p className={styles.artist_monthly_listeners}>00000 monthly listeners</p>
+                            </div>
+                            <button className={styles.follow_btn}>FOLLOW</button>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className={styles.album_info}>
+                    <div className={styles.album_info_top}>
+                        <span className={styles.album_info_header}>Album</span>
+                        <p className={styles.album_info_name}>{songInfo.album}</p>
+                    </div>
+
+                    <span className={styles.album_info_header}>Song List</span>
+                    <ul className={styles.album_song_list}>
+                        <li className={styles.current_playing}>Song 1</li>
+                        <li className={styles.current_playing}>Song 2</li>
+                        <li>Song 3</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+        )
+    }
+}
+
+
+
+
+
+
+export const AudioContext = createContext({ artist: "", song: "", album: "" });
+export function AudioProvider({ children }) {
+
+    const [currentAudio, setCurrentAudio] = useState(null);
+
 }
 
 export function useAudio() {
@@ -28,95 +127,8 @@ export function useAudio() {
 
 
 
-export default function AudioTrackCard() {
-
-    return (
-
-        <div className={styles.wrapper}>
-            <div className={styles.artist_info}>
-
-                <img className={styles.aritst_image} src="" alt="" />
-
-                <div className={styles.artist_info_wrapper}>
-                    <div className={styles.artist_music_tags}>
-                        <span className={styles.tag}>Hip Hop</span>
-                        <span className={styles.tag}>Rap</span>
-                    </div>
-                    <div className={styles.artist_info_container}>
-
-                        <div className={styles.artist_music_tags}>
-
-                            <p className={styles.artist_name}>ARTISTNAME</p>
-                            <p className={styles.artist_monthly_listeners}>00000 monthly listeners</p>
-                        </div>
-                        <button className={styles.follow_btn}>FOLLOW</button>
 
 
-                    </div>
-                </div>
-
-            </div>
-
-
-
-
-
-            <div className={styles.album_info}>
-                <div className={styles.album_info_top}>
-                    <span className={styles.album_info_header}>Album</span>
-                    <p className={styles.album_info_name}>METRO BOOMIN PRESENTS SPIDER‐MAN: ACROSS THE SPIDER‐VERSE: SOUNDTRACK FROM AND INSPIRED BY THE MOTION PICTURE
-                    </p>
-                </div>
-
-                <span className={styles.album_info_header}>Song List</span>
-                <ul className={styles.album_song_list}>
-                    <li className={styles.current_playing}>Song 1</li>
-                    <li className={styles.current_playing}>Song 2</li>
-                    <li>Song 3</li>
-
-                </ul>
-
-            </div>
-
-        </div>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export async function requestTrack(token) {
-
-    const trackUri = '11dFghVXANMlKmJXsNCbNl';
-
-    try {
-        //const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
-        const response = await fetch(`https://api.spotify.com/v1/tracks/${trackUri}`, {
-            //const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${props.device_id}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-
-        const data = await response.json();
-
-        console.log("song req", data)
-
-    }
-    catch (error) { console.error(error); }
-}
 
 export async function requestCurrentTrack(token) {
 
@@ -137,6 +149,21 @@ export async function requestCurrentTrack(token) {
     }
     catch (error) { console.error(error); }
 }
+
+export async function requestAlbum(token, album_id) {
+
+    const response = await fetch(`https://api.spotify.com/v1/albums/${album_id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    const data = await response.json();
+
+    console.log("current album req", data)
+}
+
 
 // noch in useEffect packen, ggf in andere Doc/Component packen
 export async function addTrack(device_id, token) {
@@ -192,9 +219,7 @@ export async function getQueue(token) {
     catch (error) { console.error(error); }
 }
 
-export async function getCurrentSong(token) {
-
-    //const [track, setTrack] = useState('');
+export async function reqCurrentSong(token) {
 
     try {
         const response = await fetch(`https://api.spotify.com/v1/me/player/currently-playing`, {
@@ -208,24 +233,49 @@ export async function getCurrentSong(token) {
 
         const data = await response.json();
 
+        console.log("current song", data)
+
         return data;
     }
     catch (error) { console.error(error); }
 
 }
 
-export async function getCurrentSongData() {
+export async function getCurrentSongData(token) {
 
-    const data = await getCurrentSong();
     let currentTrack = {
 
         artist: "",
         song: "",
         album: "",
+        album_id: ""
     }
-    currentTrack.artist = data.item.artists[0].name;
-    currentTrack.song = data.item.name;
-    currentTrack.album = data.item.album.name;
+
+    try {
+        const response = await fetch(`https://api.spotify.com/v1/me/player/currently-playing`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Content-Type": "application/json"
+
+            },
+        });
+
+        const data = await response.json();
+
+
+        currentTrack.artist = data.item.artists[0].name;
+        currentTrack.song = data.item.name;
+        currentTrack.album = data.item.album.name;
+        currentTrack.album_id = data.item.album.id;
+
+        console.log("current track object", currentTrack)
+
+        return currentTrack;
+    }
+
+    catch (error) { console.error(error); }
+
 }
 
 

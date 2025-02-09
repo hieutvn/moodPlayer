@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 
 export default function useAuth() {
 
-    const [access_token, setAccessToken] = useState(null);
-    const [refresh_token, setRefreshToken] = useState(null);
-    const [expires_in, setExpirey] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
+    const [refreshToken, setRefreshToken] = useState(null);
+    const [expiresIn, setExpirey] = useState(null);
 
     useEffect(() => {
 
@@ -12,10 +12,13 @@ export default function useAuth() {
 
             try {
 
-                const request_token = await fetch("http://localhost:3000/api/auth/get-token");
+                const requestToken = await fetch("http://localhost:3000/api/auth/get-token");
 
-                const data = await request_token.json();
+                const data = await requestToken.json();
 
+                if (!data) return;
+
+                console.log("Setting access")
                 const { accessToken, refreshToken, expiresIn } = data;
 
                 setAccessToken(accessToken);
@@ -32,11 +35,39 @@ export default function useAuth() {
 
     }, []);
 
-    return access_token;
-}
+    // SETTING REFRESH TOKEN
+    useEffect(() => {
 
-/*
-                        setAccessToken(res.data.accessToken);
-                        setRefreshToken(res.data.refreshToken);
-                        setExpirey(res.data.expiresIn);
-*/
+        const interval = setInterval(async () => {
+
+            const fetchRefreshToken = async () => {
+                if (refreshToken === null || expiresIn === null) return;
+
+                try {
+
+                    const requestRefreshToken = await fetch("http://localhost:3000/api/auth/get-refresh");
+
+                    const data = await requestRefreshToken.json();
+
+                    if (!data) return;
+
+                    console.log("Setting refresh")
+                    const { newAccessToken, newExpiresIn } = data;
+
+                    setAccessToken(newAccessToken);
+                    setExpirey(newExpiresIn);
+
+                }
+                catch (error) {
+
+                    console.error("Failed to send refresh token to client.", error);
+                }
+
+            }
+        }, (expiresIn - 60) * 1000); // EXPIRES 60 SEC BEFORE EXPIREY
+
+        return () => clearInterval(interval);
+    }, [refreshToken, expiresIn]);
+
+    return accessToken;
+}

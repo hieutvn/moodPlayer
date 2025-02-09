@@ -11,11 +11,11 @@ import AlbumInfo from "./AlbumInfo";
 import ArtistInfo from "./ArtistInfo";
 import Navigation from "./Navigation";
 import AudioTrackCard from "./AudioTrack";
+import useAuth from "./useAuth";
+import { CurrentSongProvider } from "./PlayerControls";
 
 
 import styles from '../assets/styles/listeningtab.module.css';
-import useAuth from "./useAuth";
-
 
 
 
@@ -53,6 +53,7 @@ function ListeningTab() {
                 <div className={styles.right_panel} >
 
                     <AudioTrackCard />
+
 
                 </div>
 

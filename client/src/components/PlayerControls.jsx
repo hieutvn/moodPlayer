@@ -12,7 +12,7 @@ import AddSongToLibIcon from '../assets/img/add-song-to-lib-icon.svg';
 import AddAlbumToLibIcon from '../assets/img/add-album-to-lib-icon.svg';
 import SoundVolumeIcon from '../assets/img/sound-volume-icon.svg';
 
-import { useAudioTrack, requestTrack, requestCurrentTrack, addTrack, getQueue, getCurrentSong } from './AudioTrack';
+import { requestCurrentTrack, addTrack, getQueue, getCurrentSongData } from './AudioTrack';
 
 
 
@@ -32,18 +32,47 @@ const track = {
     ]
 }
 
-export const SongInfoContext = createContext();
+const CurrentSongContext = createContext();
+
+export function CurrentSongProvider({ children }) {
+
+    const [currentSongCtx, setCurrentSongCtx] = useState(null);
+
+    return (
+
+        <CurrentSongContext.Provider value={{ currentSongCtx, setCurrentSongCtx }}>
+            {children}
+        </CurrentSongContext.Provider>
+    )
+}
+
+export function useCurrentSong() {
+
+    return useContext(CurrentSongContext);
+}
 
 
-function PlayerControls(props) {
+export default function PlayerControls(props) {
 
-    const [player, setPlayer] = useState(undefined);
+    const [webplayer, setPlayer] = useState(undefined);
     const [is_active, setActive] = useState(false);
     const [is_paused, setPaused] = useState(false);
-    const [current_track, setTrack] = useState('');
-    const [song_info, setSongInfo] = useState(null);
     const [device_id, setDeviceId] = useState(null);
 
+
+    const [currentSong, setCurrentSong] = useState
+        ({
+            artist: null,
+            song: null,
+            album: null,
+            album_img: null,
+            duration: null
+        });
+
+    const [songPosition, setSongPosition] = useState(0);
+
+
+    //const { setCurrentSongCtx } = useCurrentSong();
 
     useEffect(() => {
 
@@ -84,7 +113,7 @@ function PlayerControls(props) {
 
                 console.log("Ready with Device ID: ", device_id);
                 setDeviceId(device_id);
-                setPlayer(player);
+                if (webplayer === undefined) setPlayer(player);
 
                 //const connectDeviceBoo = connectDevice(props.token, device_id);
 
@@ -117,22 +146,37 @@ function PlayerControls(props) {
 
             player.addListener('player_state_changed', (state) => {
                 //console.log('Currently Playing', current_track);
-                //console.log('Position in Song', position);
-                //console.log('Duration of Song', duration);
 
                 if (!state) {
 
                     return;
                 }
-                setTrack(state.track_window.current_track);
-                getQueue(props.token)
+
+
+                // SET NEW SONG STATE
+                // GET CURRENT TRACK INFOS 
+                // GETS RENDERED IN THE RETURN ---> ARTIST, SONG, ALBUM
+
+                setCurrentSong({
+
+                    artist: state.track_window.current_track.artists.map((artist) => artist.name).join(", "), // For multiple artists
+                    song: state.track_window.current_track.name,
+                    album: state.track_window.current_track.album.name,
+                    album_img: state.track_window.current_track.album.images[0].url,
+                    duration: ((state.track_window.current_track.duration_ms / 1000) / 60).toFixed(2)
+                });
+
+                // SET FOR CONTEXT HOOK
+                //setCurrentSongCtx(currentSong);
+
                 setPaused(state.paused);
 
 
                 player.getCurrentState().then(state => {
 
                     (!state) ? setActive(false) : setActive(true);
-                    setSongInfo(state);
+                    //setSongInfo(state);
+
                 });
 
             });
@@ -149,11 +193,27 @@ function PlayerControls(props) {
 
     useEffect(() => {
 
-        requestCurrentTrack(props.token)
-        requestTrack(props.token);
-        getCurrentSong(props.token)
+        const interval = setInterval(async () => {
 
-    }, [song_info])
+            if (webplayer) {
+                const state = await webplayer.getCurrentState();
+
+                if (state) {
+
+                    const songDuration = state.track_window.current_track.duration_ms.toFixed(2);
+                    const currentPos = state.position.toFixed(2);
+                    const val = Math.floor((currentPos / songDuration) * 100);
+
+                    setSongPosition(val);
+                };
+
+
+            }
+        }, 100);
+
+        return () => clearInterval(interval);
+
+    }, [webplayer]);
 
 
     if (!is_active) {
@@ -162,7 +222,7 @@ function PlayerControls(props) {
             <>
                 <div className="container">
                     <div className="main-wrapper">
-                        <b> Instance not active. Transfer your playback using your Spotify app </b>
+                        <b>Player getting access...</b>
                     </div>
                 </div>
             </>)
@@ -173,24 +233,27 @@ function PlayerControls(props) {
 
             <div className={styles.playercontrols_container}>
                 <div className={styles.album_cover}>
-                    <img src="" alt="" />
+                    <img src={currentSong.album_img} alt={currentSong.album} />
                 </div>
 
                 <div className={styles.player}>
 
                     <div className={styles.current_playing_progress}>
-                        <div className={styles.current_playing_progressbar}></div>
+                        <div className={styles.duration}>00:00</div>
+                        <progress className={styles.current_playing_progressbar} value={songPosition / 100} />
                         <div className={styles.current_playing_progressdot}></div>
+
+                        <div className={styles.duration}>{currentSong.duration}</div>
 
                     </div>
 
                     <div className={styles.song_info}>
                         <div className={styles.artist_title}>
 
-                            <p>ARTIST</p>
+                            <p>{currentSong.artist !== null ? currentSong.artist : "Unknown"}</p>
                         </div>
                         <div className={styles.song_title}>
-                            <p>NAME</p>
+                            <p>{currentSong.song !== null ? currentSong.song : "Unknown"}</p>
                         </div>
                     </div>
 
@@ -199,17 +262,23 @@ function PlayerControls(props) {
                         <div className={styles.player_controls_left}>
 
                             <SoundVolumeIcon style={{ width: '1.25rem' }} />
+                            <div className={styles.volume_bar_container}>
+                                <div className={styles.volume_bar}></div>
+                                <div className={styles.volume_bar_dot}></div>
+
+                            </div>
                         </div>
 
                         <div className={styles.player_controls_main}>
                             <button className={styles.player_play_prev_album_btn}>
                                 <PlayNextAlbumIcon style={{ transform: 'rotate(180deg)' }} />
                             </button>
-                            <button className={styles.player_play_prev_song_btn} onClick={() => { player.previousTrack().then(() => console.log("PLAYING PREV SONG")) }}>
+                            <button className={styles.player_play_prev_song_btn} onClick={() => { webplayer.previousTrack().then(() => console.log("PLAYING PREV SONG")) }}>
                                 <PlayNextSongIcon style={{ transform: 'rotate(180deg)' }} />
+
                             </button>
                             <button className={styles.player_play_btn} onClick={() => {
-                                player.togglePlay().then(() => { console.log('Toggled playback!'); });
+                                webplayer.togglePlay().then(() => { console.log('Toggled playback!'); });
 
                             }}>
 
@@ -217,7 +286,9 @@ function PlayerControls(props) {
 
 
                             </button>
-                            <button className={styles.player_play_next_song_btn} onClick={() => { player.nextTrack().then(() => console.log("PLAYING NEXT SONG")) }}>
+                            <button className={styles.player_play_next_song_btn} onClick={() => {
+                                webplayer.nextTrack().then(() => { console.log("PLAYING NEXT SONG") })
+                            }}>
                                 <PlayNextSongIcon style={{ width: '1.25rem' }} />
                             </button>
                             <button className={styles.player_play_next_album_btn}><PlayNextAlbumIcon style={{ width: '1.25rem' }} /></button>
@@ -238,8 +309,5 @@ function PlayerControls(props) {
     }
 
 }
-
-
-export default PlayerControls;
 
 //{(is_paused) ? <PlayIcon className={`${styles.play_icon}`} /> : <PauseIcon className={styles.pause_icon} />}

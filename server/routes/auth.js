@@ -73,21 +73,47 @@ router.get("/callback",
     },
 );
 
-router.post('/store', (req, res) => {
+router.post('/get-refresh', (req, res) => {
 
-    tokenStorage = req.body;
+    const refreshToken = req.data.refresh_token;
 
-    res.json({ message: "Data stored successfully." });
+    const request = async () => {
+
+        try {
+            const reqRefreshToken = await fetch('https://accounts.spotify.com/api/token', {
+
+                method: 'POST',
+                headers: {
+
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
+
+                    grant_type: "refresh_token",
+                    refresh_token: refreshToken,
+                    client_id: env.SPOTIFY_CLIENT_ID
+                })
+            })
+                .then((res) => {
+
+                    const data = res.json();
+                    console.log("refresh", data)
+                    res.json((data) ? data.refreshToken : { message: "No refresh token received." })
+
+                });
+        }
+        catch (error) {
+
+            console.error("Requesting refresh token failed.", error);
+        }
+    }
+
 });
 
 router.get("/get-token", (req, res) => {
 
     console.log("Route at: /get-token");
-
-    console.log("storage", tokenStorage)
-
-
-    res.json(tokenStorage.accessToken !== null ? tokenStorage : { message: "no data available." })
+    res.json(tokenStorage.accessToken !== null ? tokenStorage : "");
 });
 
 
